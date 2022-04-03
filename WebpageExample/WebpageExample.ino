@@ -13,16 +13,17 @@
 #include <ESPmDNS.h>
 
 // These pins are used to indicate button press. They can be connected to LEDs for visualization of working code.
-#define PIN1 14
-#define PIN2 27
-#define PIN3 26
-#define PIN4 25
+#define UP_LED_PIN 14
+#define DOWN_LED_PIN 27
+#define RIGHT_LED_PIN 26
+#define LEFT_LED_PIN 25
 
-volatile bool BUTTONDOWNFLAG1 = false;
-volatile bool BUTTONDOWNFLAG2 = false;
-volatile bool BUTTONDOWNFLAG3 = false;
-volatile bool BUTTONDOWNFLAG4 = false;
+volatile bool UPBUTTONFLAG = false;
+volatile bool DOWNBUTTONFLAG = false;
+volatile bool RIGHTBUTTONFLAG = false;
+volatile bool LEFTBUTTONFLAG = false;
 volatile bool BUTTONRELEASEFLAG_COMMON = false;
+
 
 // ----------------
 // Set your WiFi SSID and Password here
@@ -56,44 +57,36 @@ void handleNotFound(){
   server.send(404, "text/plain", message);
 }
 
-void buttondown_handler1(){
-  BUTTONDOWNFLAG1 = false;
-  digitalWrite(PIN1, HIGH);
+void up_button_handler(){
+  UPBUTTONFLAG = false;
+  digitalWrite(UP_LED_PIN, !digitalRead(UP_LED_PIN)); //Toggle LED pin
 }
 
-void buttondown_handler2(){
-  BUTTONDOWNFLAG2 = false;
-  digitalWrite(PIN2, HIGH);
+void down_button_handler(){
+  DOWNBUTTONFLAG = false;
+  digitalWrite(DOWN_LED_PIN, !digitalRead(DOWN_LED_PIN)); //Toggle LED pin
 }
 
-void buttondown_handler3(){
-  BUTTONDOWNFLAG3 = false;
-  digitalWrite(PIN3, HIGH);
+void right_button_handler(){
+  RIGHTBUTTONFLAG = false;
+  digitalWrite(RIGHT_LED_PIN, !digitalRead(RIGHT_LED_PIN)); //Toggle LED pin
 }
 
-void buttondown_handler4(){
-  BUTTONDOWNFLAG4 = false;
-  digitalWrite(PIN4, HIGH);
-}
-
-void buttonrelease_handler_common(){
-  digitalWrite(PIN1, LOW);
-  digitalWrite(PIN2, LOW);
-  digitalWrite(PIN3, LOW);
-  digitalWrite(PIN4, LOW);
-  BUTTONRELEASEFLAG_COMMON = false;
+void left_button_handler(){
+  LEFTBUTTONFLAG = false;
+  digitalWrite(LEFT_LED_PIN, !digitalRead(LEFT_LED_PIN)); //Toggle LED pin
 }
 
 void setup(void){
 
-   pinMode(PIN1, OUTPUT);    
-   pinMode(PIN2, OUTPUT);
-   pinMode(PIN3, OUTPUT);
-   pinMode(PIN4, OUTPUT);
-   digitalWrite(PIN1, LOW);
-   digitalWrite(PIN2, LOW);
-   digitalWrite(PIN3, LOW);
-   digitalWrite(PIN4, LOW);
+   pinMode(UP_LED_PIN, OUTPUT);    
+   pinMode(DOWN_LED_PIN, OUTPUT);
+   pinMode(RIGHT_LED_PIN, OUTPUT);
+   pinMode(LEFT_LED_PIN, OUTPUT);
+   digitalWrite(UP_LED_PIN, LOW);
+   digitalWrite(DOWN_LED_PIN, LOW);
+   digitalWrite(RIGHT_LED_PIN, LOW);
+   digitalWrite(LEFT_LED_PIN, LOW);
 
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
@@ -121,33 +114,27 @@ void setup(void){
   server.on("/", handleRoot);
 
   server.on("/up", [](){
-    Serial.println("up - buttondown1");
-    BUTTONDOWNFLAG1 = true;
+    Serial.println("up");
+    UPBUTTONFLAG = true;
     server.send(200, "text/plain", "up");
   });
 
   server.on("/down", [](){
-    Serial.println("down - buttondown2");
-    BUTTONDOWNFLAG2 = true;
+    Serial.println("down");
+    DOWNBUTTONFLAG = true;
     server.send(200, "text/plain", "down");
   });
 
   server.on("/right", [](){
-    Serial.println("right - buttondown3");
-    BUTTONDOWNFLAG3 = true;
+    Serial.println("right");
+    RIGHTBUTTONFLAG = true;
     server.send(200, "text/plain", "right");
   });
 
   server.on("/left", [](){
-    Serial.println("left - buttondown4");
-    BUTTONDOWNFLAG4 = true;
+    Serial.println("left");
+    LEFTBUTTONFLAG = true;
     server.send(200, "text/plain", "left");
-  });
-
-  server.on("/buttonrelease", [](){
-    Serial.println("ButtonRelease");
-    BUTTONRELEASEFLAG_COMMON = true;
-    server.send(200, "text/plain", "buttonrelease");
   });
 
   server.onNotFound(handleNotFound);
@@ -158,15 +145,13 @@ void setup(void){
 
 void loop(void){
   server.handleClient();
-  if(BUTTONDOWNFLAG1){
-    buttondown_handler1();
-  }else if(BUTTONDOWNFLAG2){
-    buttondown_handler2();
-  }else if(BUTTONDOWNFLAG3){
-    buttondown_handler3();
-  }else if(BUTTONDOWNFLAG4){
-    buttondown_handler4();
-  }else if(BUTTONRELEASEFLAG_COMMON){
-    buttonrelease_handler_common();
+  if(UPBUTTONFLAG){
+    up_button_handler();
+  }else if(DOWNBUTTONFLAG){
+    down_button_handler();
+  }else if(RIGHTBUTTONFLAG){
+    right_button_handler();
+  }else if(LEFTBUTTONFLAG){
+    left_button_handler();
   }
 }
