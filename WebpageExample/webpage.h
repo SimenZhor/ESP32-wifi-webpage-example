@@ -13,22 +13,22 @@ R"(
         <div class="row" style="height: 33.33%; padding-top: 1em; padding-bottom:1em">
           <div class="col-xs-8" ></div>
           <div class="col-xs-4" style="text-align: center; height: 100%">
-            <button id="drive" type="button" class="btn btn-default" style="height: 100%; width: 100%" onmousedown='makeAjaxCall("forward")' onmouseup='makeAjaxCall("driveStop")' ontouchstart='makeAjaxCall("forward")' ontouchend='makeAjaxCall("driveStop")'>Drive</button>
+            <button id="UP" type="button" class="btn btn-default" style="height: 100%; width: 100%" onpointerdown='makeAjaxCall("up")' onpointerup='makeAjaxCall("buttonrelease")'>Up</button>
           </div>
         </div>
         <div class="row" style="height: 33.33%; padding-bottom:1em">
           <div class="col-xs-4" style="height: 100%; text-align: center">
-            <button id="left" type="button" class="btn btn-default" style="height: 100%; width: 100%" onmousedown='makeAjaxCall("left")' onmouseup='makeAjaxCall("steerStop")' ontouchstart='makeAjaxCall("left")' ontouchend='makeAjaxCall("steerStop")'>Left</button>
+            <button id="LEFT" type="button" class="btn btn-default" style="height: 100%; width: 100%" onpointerdown='makeAjaxCall("left")' onpointerup='makeAjaxCall("buttonrelease")'>Left</button>
           </div>
           <div class="col-xs-4" style="height: 100%; text-align: center">
-            <button id="right" type="button" class="btn btn-default" style="height: 100%; width: 100%" onmousedown='makeAjaxCall("right")' onmouseup='makeAjaxCall("steerStop")' ontouchstart='makeAjaxCall("right")' ontouchend='makeAjaxCall("steerStop")'>Right</button>
+            <button id="RIGHT" type="button" class="btn btn-default" style="height: 100%; width: 100%" onpointerdown='makeAjaxCall("right")' onpointerup='makeAjaxCall("buttonrelease")'>Right</button>
           </div>
           <div class="col-xs-4" ></div>
         </div>
         <div class="row" style="height: 33.33%; padding-bottom:1em">
           <div class="col-xs-8" ></div>
           <div class="col-xs-4" style="height: 100%; text-align: center">
-            <button id="back" type="button" class="btn btn-default" style="height: 100%; width: 100%" onmousedown='makeAjaxCall("back")' onmouseup='makeAjaxCall("driveStop")' ontouchstart='makeAjaxCall("back")' ontouchend='makeAjaxCall("driveStop")'>Back</button>
+            <button id="DOWN" type="button" class="btn btn-default" style="height: 100%; width: 100%" onpointerdown='makeAjaxCall("down")' onpointerup='makeAjaxCall("buttonrelease")'>Down</button>
           </div>
         </div>
       </div>
@@ -47,21 +47,21 @@ R"(
               makeAjaxCall("right");   
           } else if(event.keyCode == 38) {
               //Up Arrow
-              makeAjaxCall("forward");   
+              makeAjaxCall("up");   
           } else if(event.keyCode == 40) {
               //Down Arrow
-              makeAjaxCall("back");   
+              makeAjaxCall("down");   
           }
       });
 
       document.addEventListener('keyup', function(event) {
           if(event.keyCode == 37 ||event.keyCode == 39 ) {
               //Left or Right Arrow
-              makeAjaxCall("steerStop");            
+              makeAjaxCall("buttonrelease");            
           }
           else if(event.keyCode == 38 ||event.keyCode == 40 ) {
               //Up or Down Arrow
-              makeAjaxCall("driveStop");            
+              makeAjaxCall("buttonrelease");            
           }
       });
     </script>-->
